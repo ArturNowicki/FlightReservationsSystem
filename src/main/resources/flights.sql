@@ -93,7 +93,7 @@ JOIN Flight ON (a.airportId = departureCity)
 JOIN Airport b ON (b.airportId = arrivalCity)
 JOIN FlightSchedule ON (flightId=idFlight)
 JOIN FlightDays ON (dayId = IdDay)
-WHERE a.airportCity='Berlin'
+WHERE a.airportCity='Warsaw'
 ORDER BY dayId;
 
 

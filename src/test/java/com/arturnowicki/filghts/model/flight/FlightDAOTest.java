@@ -1,5 +1,6 @@
 package com.arturnowicki.filghts.model.flight;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -23,16 +24,10 @@ import com.arturnowicki.flights.model.flight.FlightDAO;
 public class FlightDAOTest {
 
 	private static SessionFactory sessionFactory;
-	private static Session session;
 
 	@BeforeClass
 	public static void initializeSessionFactory() {
 		sessionFactory = HibernateUtils.getSessionFactory();
-	}
-
-	@Before
-	public void initializeSession() {
-		session = sessionFactory.getCurrentSession();
 	}
 
 	@AfterClass
@@ -42,27 +37,23 @@ public class FlightDAOTest {
 	
 	@Test
 	public void testGetFlightsFromAirportValidAirportId() {
-		Airport departureCity = new Airport("Warsaw");
-		departureCity.setAirportId(1);
+		String expectedDepartureName = "Warsaw";
+		String expectedArrivalName = "London";
+		int expectedDepartureId = 1;
+		int expectedArrivalId = 2;
+		Airport expectedDepartureCity = new Airport(expectedDepartureName);
+		Airport expectedArrivalCity = new Airport(expectedDepartureName);
+		expectedDepartureCity.setAirportId(expectedDepartureId);
 		FlightDAO flightDAO = new FlightDAO();
-		Set<Flight> flights = flightDAO.getFlightsFromAirport(session, 1);
-		flights.size();
-	}
-
-	@Test
-	public void testGetFlightsFromAirportInvalidAirportId() {
-		Airport departureCity = new Airport("Warsaw");
-		departureCity.setAirportId(1);
-		FlightDAO flightDAO = new FlightDAO();
-		Set<Flight> flights = flightDAO.getFlightsFromAirport(session, 1);
-		flights.forEach(System.out :: println);
+		Set<Flight> flights = flightDAO.getFlightsFromAirport(sessionFactory, expectedDepartureId);
+		assertEquals(2,flights.size());
 	}
 
 	@Test
 	public void testReturnFlightByIdWhenInvalidId() {
 		int flightId = 9;
 		FlightDAO flightDAO = new FlightDAO();
-		Optional<Flight> maybeFlifht = flightDAO.getFlightById(session, flightId);
+		Optional<Flight> maybeFlifht = flightDAO.getFlightById(sessionFactory, flightId);
 		assertFalse(maybeFlifht.isPresent());
 	}
 
@@ -78,11 +69,9 @@ public class FlightDAOTest {
 		Flight expectedFlight = new Flight(expectedDepartureTime, departureCity, expectedArrivalTime, arrivalCity);
 		expectedFlight.setFlightId(1);
 		FlightDAO flightDAO = new FlightDAO();
-		Optional<Flight> maybeFlight = flightDAO.getFlightById(session, flightId);
+		Optional<Flight> maybeFlight = flightDAO.getFlightById(sessionFactory, flightId);
 		assertTrue("isPresent", maybeFlight.isPresent());
 		Flight flight = maybeFlight.get();
-		System.out.println(flight.getDepartureTime());
-		System.out.println(flight.getDepartureCity());
 		assertTrue("isEqual", compareFlights(expectedFlight, flight));
 	}
 

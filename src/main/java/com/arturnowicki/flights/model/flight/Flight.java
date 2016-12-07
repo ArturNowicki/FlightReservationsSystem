@@ -28,11 +28,11 @@ public class Flight {
 	private Time departureTime;
 	private Time arrivalTime;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "departureCity")
 	private Airport departureCity;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "arrivalCity")
 	private Airport arrivalCity;
 

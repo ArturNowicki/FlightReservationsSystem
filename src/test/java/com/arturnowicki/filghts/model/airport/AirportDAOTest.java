@@ -35,7 +35,6 @@ public class AirportDAOTest {
 
 	@Before
 	public void initializeDB() {
-		session = sessionFactory.getCurrentSession();
 		airportsForComparison = new ArrayList<>();
 		Airport airport = new Airport("Warsaw");
 		airport.setAirportId(1);
@@ -70,7 +69,7 @@ public class AirportDAOTest {
 	@Test
 	public void testGetAirportByIdShouldReturnExistingAirport() {
 		AirportDAO airportDAO = new AirportDAO();
-		Optional<Airport> airport = airportDAO.getAirportById(session, 6);
+		Optional<Airport> airport = airportDAO.getAirportById(sessionFactory, 6);
 		assertTrue(airport.isPresent());
 		assertEquals("Berlin", airport.get().getAirportCity());
 	}
@@ -78,18 +77,18 @@ public class AirportDAOTest {
 	@Test
 	public void testGetAirportByIdShouldReturnNullForNoId() {
 		AirportDAO airportDAO = new AirportDAO();
-		Optional<Airport> airport = airportDAO.getAirportById(session, 9);
+		Optional<Airport> airport = airportDAO.getAirportById(sessionFactory, 9);
 		assertFalse(airport.isPresent());
 	}
 
 	@Test
 	public void testShouldReturnAllAirports() {
 		AirportDAO airportDAO = new AirportDAO();
-		List<Airport> airports = airportDAO.getAirportsList(session);
-		assertEquals(airports.size(), airportsForComparison.size());
+		List<Airport> airports = airportDAO.getAirportsList(sessionFactory);
+		airports.forEach(System.out :: println);
+		assertEquals(airportsForComparison.size(), airports.size());
 		assertTrue(airports.containsAll(airportsForComparison));
 		assertTrue(airportsForComparison.containsAll(airports));
-		airports.forEach(System.out :: println);
 	}
 
 }
