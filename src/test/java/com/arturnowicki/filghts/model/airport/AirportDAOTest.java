@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -18,6 +19,8 @@ import org.junit.Test;
 import com.arturnowicki.flights.model.HibernateUtils;
 import com.arturnowicki.flights.model.airport.Airport;
 import com.arturnowicki.flights.model.airport.AirportDAO;
+import com.arturnowicki.flights.model.flight.Flight;
+import com.arturnowicki.flights.model.flight.FlightDAO;
 
 public class AirportDAOTest {
 
@@ -86,6 +89,7 @@ public class AirportDAOTest {
 		assertEquals(airports.size(), airportsForComparison.size());
 		assertTrue(airports.containsAll(airportsForComparison));
 		assertTrue(airportsForComparison.containsAll(airports));
+		airports.forEach(System.out :: println);
 	}
 
 }

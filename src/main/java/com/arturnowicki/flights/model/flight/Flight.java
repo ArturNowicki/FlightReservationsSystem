@@ -4,11 +4,16 @@ import java.sql.Time;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+
+import com.arturnowicki.flights.model.airport.Airport;
 
 @Entity
 @Table(name = "Flight", uniqueConstraints = {
@@ -23,13 +28,18 @@ public class Flight {
 	private Time departureTime;
 	private Time arrivalTime;
 
-	private int departureCity;
-	private int  arrivalCity;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "departureCity")
+	private Airport departureCity;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "arrivalCity")
+	private Airport arrivalCity;
 
 	public Flight() {
 	}
 
-	public Flight(Time departureTime, int departureCity, Time arrivalTime, int arrivalCity) {
+	public Flight(Time departureTime, Airport departureCity, Time arrivalTime, Airport arrivalCity) {
 		this.departureTime = departureTime;
 		this.departureCity = departureCity;
 		this.arrivalTime = arrivalTime;
@@ -60,26 +70,27 @@ public class Flight {
 		this.arrivalTime = arrivalTime;
 	}
 
-	public int getDepartureCity() {
+	public Airport getDepartureCity() {
 		return departureCity;
 	}
 
-	public void setDepartureCity(int departureCity) {
+	public void setDepartureCity(Airport departureCity) {
 		this.departureCity = departureCity;
 	}
 
-	public int getArrivalCity() {
+	public Airport getArrivalCity() {
 		return arrivalCity;
 	}
 
-	public void setArrivalCity(int arrivalCity) {
+	public void setArrivalCity(Airport arrivalCity) {
 		this.arrivalCity = arrivalCity;
 	}
 
 	@Override
 	public String toString() {
-		return "Flight number " + flightId + ", departure: " + departureTime + " " + departureCity + ", arrival: "
-				+ arrivalTime + " " + arrivalCity;
+		return "Flight [flightId=" + flightId + ", departureTime=" + departureTime + ", arrivalTime=" + arrivalTime
+				+ ", departureCity=" + departureCity + ", arrivalCity=" + arrivalCity + "]";
 	}
 
+	
 }

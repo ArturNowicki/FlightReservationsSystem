@@ -1,5 +1,5 @@
 USE FlightsReservations;
-
+drop table continent;
 drop table if exists Airport;
 CREATE TABLE Airport (
 airportId int NOT NULL AUTO_INCREMENT,
@@ -87,14 +87,17 @@ INSERT INTO SeatReservation (idSchedule, idSeat) VALUES
 Select * from Airport ORDER BY airportId;
 
 -- display all flights from selected airport
-SELECT dayOfWeek, departureTime, a.airportCity, b.airportCity, arrivalTime
+SELECT dayOfWeek, departureTime, a.airportCity as departure, b.airportCity as arrival, arrivalTime
 FROM Airport a
 JOIN Flight ON (a.airportId = departureCity)
 JOIN Airport b ON (b.airportId = arrivalCity)
 JOIN FlightSchedule ON (flightId=idFlight)
 JOIN FlightDays ON (dayId = IdDay)
-WHERE a.airportCity='London'
+WHERE a.airportCity='Berlin'
 ORDER BY dayId;
+
+
+SELECT * FROM Fligh;
 
 
 -- display all flights from selected day and airport

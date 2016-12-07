@@ -1,12 +1,20 @@
 package com.arturnowicki.flights.model.airport;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+
+import com.arturnowicki.flights.model.flight.Flight;
 
 @Entity
 @Table(name = "Airport", uniqueConstraints = { @UniqueConstraint(columnNames = { "airportCity" }) })
@@ -18,6 +26,12 @@ public class Airport implements Comparable<Airport> {
 	private int airportId;
 
 	private String airportCity;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "departureCity")
+	private Set<Flight> departingFlights = new HashSet<Flight>();
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "arrivalCity")
+	private Set<Flight> arrivingFlights = new HashSet<Flight>();
 
 	public Airport() {
 	}
@@ -40,6 +54,22 @@ public class Airport implements Comparable<Airport> {
 
 	public void setAirportCity(String airportCity) {
 		this.airportCity = airportCity;
+	}
+	
+	public Set<Flight> getDepartingFlights() {
+		return departingFlights;
+	}
+
+	public void setDepartingFlights(Set<Flight> flights) {
+		this.departingFlights = flights;
+	}
+
+	public Set<Flight> getArrivingFlights() {
+		return arrivingFlights;
+	}
+
+	public void setArrivingFlights(Set<Flight> arrivingFlights) {
+		this.arrivingFlights = arrivingFlights;
 	}
 
 	@Override

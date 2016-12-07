@@ -10,7 +10,7 @@ public class AirportDAO {
 
 	public List<Airport> getAirportsList(Session session) {
 		session.beginTransaction();
-		List<Airport> airports = session.createQuery("from Airport").list();
+		List<Airport> airports = session.createCriteria(Airport.class).list();
 		session.getTransaction().commit();
 		return airports;
 	}
@@ -18,7 +18,7 @@ public class AirportDAO {
 	public Optional<Airport> getAirportById(Session session, int id) {
 		session.beginTransaction();
 		Airport airport = (Airport) session.get(Airport.class, id);
-		Hibernate.initialize(airport);
+//		Hibernate.initialize(airport);
 		session.getTransaction().commit();
 		return Optional.ofNullable(airport);
 	}
