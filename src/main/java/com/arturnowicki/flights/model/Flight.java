@@ -1,4 +1,4 @@
-package com.arturnowicki.flights.model.flight;
+package com.arturnowicki.flights.model;
 
 import java.sql.Time;
 
@@ -12,8 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-
-import com.arturnowicki.flights.model.airport.Airport;
 
 @Entity
 @Table(name = "Flight", uniqueConstraints = {
@@ -84,6 +82,54 @@ public class Flight {
 
 	public void setArrivalCity(Airport arrivalCity) {
 		this.arrivalCity = arrivalCity;
+	}
+
+	
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((arrivalCity == null) ? 0 : arrivalCity.hashCode());
+		result = prime * result + ((arrivalTime == null) ? 0 : arrivalTime.hashCode());
+		result = prime * result + ((departureCity == null) ? 0 : departureCity.hashCode());
+		result = prime * result + ((departureTime == null) ? 0 : departureTime.hashCode());
+		result = prime * result + flightId;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Flight other = (Flight) obj;
+		if (arrivalCity == null) {
+			if (other.arrivalCity != null)
+				return false;
+		} else if (!arrivalCity.equals(other.arrivalCity))
+			return false;
+		if (arrivalTime == null) {
+			if (other.arrivalTime != null)
+				return false;
+		} else if (!arrivalTime.equals(other.arrivalTime))
+			return false;
+		if (departureCity == null) {
+			if (other.departureCity != null)
+				return false;
+		} else if (!departureCity.equals(other.departureCity))
+			return false;
+		if (departureTime == null) {
+			if (other.departureTime != null)
+				return false;
+		} else if (!departureTime.equals(other.departureTime))
+			return false;
+		if (flightId != other.flightId)
+			return false;
+		return true;
 	}
 
 	@Override

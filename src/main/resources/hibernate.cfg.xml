@@ -20,7 +20,8 @@
         <property name="hibernate.current_session_context_class">thread</property>
 
         <!-- Mapping with model class containing annotations -->
-        <mapping class="com.arturnowicki.flights.model.flight.Flight"/>
-        <mapping class="com.arturnowicki.flights.model.airport.Airport"/>
+        <mapping class="com.arturnowicki.flights.model.Flight"/>
+        <mapping class="com.arturnowicki.flights.model.Airport"/>
+        <mapping class="com.arturnowicki.flights.model.FlightSchedule"/>
     </session-factory>
 </hibernate-configuration>

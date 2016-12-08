@@ -1,4 +1,4 @@
-package com.arturnowicki.flights.model.airport;
+package com.arturnowicki.flights.model;
 
 import java.util.List;
 import java.util.Optional;

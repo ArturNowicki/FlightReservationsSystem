@@ -1,10 +1,10 @@
-package com.arturnowicki.filghts.model.airport;
+package com.arturnowicki.filghts.model;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.arturnowicki.flights.model.airport.Airport;
+import com.arturnowicki.flights.model.Airport;
 
 public class AirportCompareToTest {
 	

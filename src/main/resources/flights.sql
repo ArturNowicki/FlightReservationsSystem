@@ -43,32 +43,32 @@ INSERT INTO Seat (seatNo) VALUES
 ('E01'), ('E02'), ('E03'), ('E04');
 
 
-drop table if exists FlightDays;
-CREATE TABLE FlightDays (
-dayId int NOT NULL AUTO_INCREMENT,
-dayOfWeek VARCHAR(5),
-PRIMARY KEY (dayId)
-);
-INSERT INTO FlightDays (dayOfWeek) VALUES ('mon'), ('tue'), ('wed'), ('thu'),
-							  ('fri'), ('sat'), ('sun');
+-- drop table if exists FlightDays;
+-- CREATE TABLE FlightDays (
+-- dayId int NOT NULL AUTO_INCREMENT,
+-- dayOfWeek VARCHAR(5),
+-- PRIMARY KEY (dayId)
+-- );
+-- INSERT INTO FlightDays (dayOfWeek) VALUES ('MONDAY'), ('TUESDAY'), ('WEDNESDAY'), ('THURSDAY'),
+-- 							  ('FRIDAY'), ('SATURDAY'), ('SUNDAY');
 
 
 drop table if exists FlightSchedule;
 CREATE TABLE FlightSchedule (
 	scheduleId int NOT NULL AUTO_INCREMENT,
+    dayOfWeek Varchar(10) NOT NULL,
 	idFlight int NOT NULL REFERENCES Flight(flightId),
-    idDay int NOT NULL REFERENCES FlightDays(dayId),
     PRIMARY KEY (scheduleId),
-    UNIQUE KEY (idFlight, idDay)
+    UNIQUE KEY (idFlight, dayOfWeek)
 );
-INSERT INTO FlightSchedule(idFlight, idDay) VALUES
-	(1, 1), (2, 1), (3, 1), (4, 1),
-	(5, 2), (6, 2), (3, 2), (4, 2), (7, 2), (8, 2),
-	(1, 3), (2, 3), (3, 3), (4, 3), (7, 3), (8, 3),
-	(1, 4), (2, 4), (3, 4), (4, 4), (5, 4), (6, 4),
-	(1, 5), (2, 5), (3, 5), (4, 5),
-	(1, 6), (2, 6), (5, 6), (6, 6),
-	(1, 7), (2, 7), (3, 7), (4, 7), (7, 7), (8, 7);
+INSERT INTO FlightSchedule(dayOfWeek, idFlight) VALUES
+	('MONDAY', 1), ('MONDAY', 2), ('MONDAY', 3), ('MONDAY', 4),
+	('TUESDAY', 5), ('TUESDAY', 6), ('TUESDAY', 3), ('TUESDAY', 4), ('TUESDAY', 7), ('TUESDAY', 8),
+	('WEDNESDAY', 1), ('WEDNESDAY', 2), ('WEDNESDAY', 3), ('WEDNESDAY', 4), ('WEDNESDAY', 7), ('WEDNESDAY', 8),
+	('THURSDAY', 1), ('THURSDAY', 2), ('THURSDAY', 3), ('THURSDAY', 4), ('THURSDAY', 5), ('THURSDAY', 6),
+	('FRIDAY', 1), ('FRIDAY', 2), ('FRIDAY', 3), ('FRIDAY', 4),
+	('SATURDAY', 1), ('SATURDAY', 2), ('SATURDAY', 5), ('SATURDAY', 6),
+	('SUNDAY', 1), ('SUNDAY', 2), ('SUNDAY', 3), ('SUNDAY', 4), ('SUNDAY', 7), ('SUNDAY', 8);
 
 
 drop table if exists SeatReservation;
@@ -87,7 +87,7 @@ INSERT INTO SeatReservation (idSchedule, idSeat) VALUES
 Select * from Airport ORDER BY airportId;
 
 -- display all flights from selected airport
-SELECT dayOfWeek, departureTime, a.airportCity as departure, b.airportCity as arrival, arrivalTime
+SELECT flightId, dayOfWeek, departureTime, a.airportCity as departure, b.airportCity as arrival, arrivalTime
 FROM Airport a
 JOIN Flight ON (a.airportId = departureCity)
 JOIN Airport b ON (b.airportId = arrivalCity)
@@ -97,20 +97,25 @@ WHERE a.airportCity='Warsaw'
 ORDER BY dayId;
 
 
-SELECT * FROM Fligh;
+SELECT * FROM Flight order by flightId;
 
+-- display all flights from selected day and airport v1
+SELECT scheduleId, dayOfWeek, idFlight, departureTime, a.airportCity, b.airportCity, arrivalTime FROM FlightSchedule 
+JOIN Flight ON (idFlight=flightId)
+JOIN Airport a ON (departureCity = a.airportId)
+JOIN Airport b ON (arrivalCity = b.airportId)
+WHERE dayOfWeek = 'MONDAY'order by scheduleId;
 
--- display all flights from selected day and airport
+-- display all flights from selected day and airport v2
 SELECT dayOfWeek, departureTime, a.airportCity, b.airportCity, arrivalTime
 FROM Airport a
 JOIN Flight ON (a.airportId = departureCity)
 JOIN Airport b ON (b.airportId = arrivalCity)
 JOIN FlightSchedule ON (flightId=idFlight)
-JOIN FlightDays ON (dayId = IdDay)
-WHERE dayId=3 AND a.airportCity='London';
+WHERE dayOfWeek = 'WEDNESDAY' AND a.airportCity='London';
 
 -- display flifhts from airport
-SELECT departureTime, departureCity airportCity, arrivalTime, arrivalCity, airportCity FROM Flight
+SELECT departureTime, departureCity, arrivalTime, arrivalCity FROM Flight
 WHERE departureCity=(SELECT airportId FROM Airport WHERE airportId=1);
 
 SELECT airportId FROM Airport WHERE airportId=1;
@@ -119,7 +124,7 @@ SELECT airportId FROM Airport WHERE airportId=1;
 SELECT dayOfWeek, flightId, departureTime, departureCity, arrivalTime, arrivalCity FROM Flight f
 JOIN FlightSchedule s on f.flightId=s.idFlight
 JOIN FlightDays d on s.idDay=d.dayId
-WHERE dayOfWeek='mon' AND departureCity='Warsaw' ORDER BY departureTime;
+WHERE dayOfWeek='MONDAY' AND departureCity='Warsaw' ORDER BY departureTime;
 
 -- select available seats for selected flight
 drop table if exists tempTab;
@@ -133,7 +138,7 @@ JOIN FlightSchedule fs on f.flightId=fs.idFlight
 JOIN FlightDays d on fs.idDay=d.dayId
 JOIN SeatReservation sr on scheduleId = sr.idSchedule
 JOIN Seat s on sr.idSeat = s.seatId
-WHERE dayOfWeek='mon'
+WHERE dayOfWeek='MONDAY'
 AND departureCity = 'Warsaw'
 ORDER BY departureTime);
 SELECT * FROM Seat WHERE seatNo NOT IN (SELECT noSeat FROM tempTab);

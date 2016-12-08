@@ -1,4 +1,4 @@
-package com.arturnowicki.filghts.model.airport;
+package com.arturnowicki.filghts.model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -7,7 +7,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -16,16 +15,13 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.arturnowicki.flights.model.Airport;
+import com.arturnowicki.flights.model.AirportDAO;
 import com.arturnowicki.flights.model.HibernateUtils;
-import com.arturnowicki.flights.model.airport.Airport;
-import com.arturnowicki.flights.model.airport.AirportDAO;
-import com.arturnowicki.flights.model.flight.Flight;
-import com.arturnowicki.flights.model.flight.FlightDAO;
 
 public class AirportDAOTest {
 
 	private static SessionFactory sessionFactory;
-	private static Session session;
 	private List<Airport> airportsForComparison;
 
 	@BeforeClass
@@ -85,7 +81,6 @@ public class AirportDAOTest {
 	public void testShouldReturnAllAirports() {
 		AirportDAO airportDAO = new AirportDAO();
 		List<Airport> airports = airportDAO.getAirportsList(sessionFactory);
-		airports.forEach(System.out :: println);
 		assertEquals(airportsForComparison.size(), airports.size());
 		assertTrue(airports.containsAll(airportsForComparison));
 		assertTrue(airportsForComparison.containsAll(airports));
