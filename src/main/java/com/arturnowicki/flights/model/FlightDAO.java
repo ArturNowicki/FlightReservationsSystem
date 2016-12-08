@@ -11,11 +11,11 @@ import com.arturnowicki.flights.model.exceptions.WrongAirportException;
 
 public class FlightDAO {
 	
-	public List<Flight> getFlightsFromAirport(SessionFactory sessionFactory, int airportId) throws WrongAirportException {
+	public List<Flight> getFlightsFromAirport(int airportId) throws WrongAirportException {
 		AirportDAO airportDAO = new AirportDAO();
-		Optional<Airport> maybeAirport = airportDAO.getAirportById(sessionFactory, airportId);
+		Optional<Airport> maybeAirport = airportDAO.getAirportById(airportId);
 		if(maybeAirport.isPresent()) {
-			Session session = sessionFactory.getCurrentSession();
+			Session session = HibernateUtils.getSessionFactory().getCurrentSession();
 			session.beginTransaction();
 			Airport airport = maybeAirport.get();
 			session.update(airport);
@@ -28,11 +28,11 @@ public class FlightDAO {
 		}
 	}
 
-	public List<Flight> getFlightsToAirport(SessionFactory sessionFactory, int airportId) throws WrongAirportException {
+	public List<Flight> getFlightsToAirport(int airportId) throws WrongAirportException {
 		AirportDAO airportDAO = new AirportDAO();
-		Optional<Airport> maybeAirport = airportDAO.getAirportById(sessionFactory, airportId);
+		Optional<Airport> maybeAirport = airportDAO.getAirportById(airportId);
 		if(maybeAirport.isPresent()) {
-			Session session = sessionFactory.getCurrentSession();
+			Session session = HibernateUtils.getSessionFactory().getCurrentSession();
 			session.beginTransaction();
 			Airport airport = maybeAirport.get();
 			session.update(airport);
@@ -45,8 +45,8 @@ public class FlightDAO {
 		}
 	}
 
-	public Optional<Flight> getFlightById(SessionFactory sessionFactory, int id) {
-		Session session = sessionFactory.getCurrentSession();
+	public Optional<Flight> getFlightById(int id) {
+		Session session = HibernateUtils.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		Flight flight = (Flight) session.get(Flight.class, id);
 		session.getTransaction().commit();

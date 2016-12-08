@@ -5,5 +5,5 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ AirportDAOTest.class, AirportCompareToTest.class, FlightDAOTest.class })
+@SuiteClasses({ AirportCompareToTest.class, FlightDAOTest.class, AirportDAOTest.class })
 public class AllTests {}

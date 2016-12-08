@@ -21,13 +21,7 @@ import com.arturnowicki.flights.model.HibernateUtils;
 
 public class AirportDAOTest {
 
-	private static SessionFactory sessionFactory;
 	private List<Airport> airportsForComparison;
-
-	@BeforeClass
-	public static void initializeSessionFactory() {
-		sessionFactory = HibernateUtils.getSessionFactory();
-	}
 
 	@Before
 	public void initializeDB() {
@@ -57,15 +51,10 @@ public class AirportDAOTest {
 		airportsForComparison.add(airport);
 	}
 
-	@AfterClass
-	public static void deinitSession() {
-		sessionFactory.close();
-	}
-
 	@Test
 	public void testGetAirportByIdShouldReturnExistingAirport() {
 		AirportDAO airportDAO = new AirportDAO();
-		Optional<Airport> airport = airportDAO.getAirportById(sessionFactory, 6);
+		Optional<Airport> airport = airportDAO.getAirportById(6);
 		assertTrue(airport.isPresent());
 		assertEquals("Berlin", airport.get().getAirportCity());
 	}
@@ -73,14 +62,14 @@ public class AirportDAOTest {
 	@Test
 	public void testGetAirportByIdShouldReturnNullForNoId() {
 		AirportDAO airportDAO = new AirportDAO();
-		Optional<Airport> airport = airportDAO.getAirportById(sessionFactory, 9);
+		Optional<Airport> airport = airportDAO.getAirportById(9);
 		assertFalse(airport.isPresent());
 	}
 
 	@Test
 	public void testShouldReturnAllAirports() {
 		AirportDAO airportDAO = new AirportDAO();
-		List<Airport> airports = airportDAO.getAirportsList(sessionFactory);
+		List<Airport> airports = airportDAO.getAirportsList();
 		assertEquals(airportsForComparison.size(), airports.size());
 		assertTrue(airports.containsAll(airportsForComparison));
 		assertTrue(airportsForComparison.containsAll(airports));

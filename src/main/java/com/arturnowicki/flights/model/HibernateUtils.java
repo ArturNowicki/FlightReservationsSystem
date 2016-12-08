@@ -10,6 +10,7 @@ public class HibernateUtils {
 	private static SessionFactory sessionFactory;
 
 	public static SessionFactory getSessionFactory() {
+		// if(sessionFactory == null || sessionFactory.isClosed()) {
 		if (sessionFactory == null) {
 			sessionFactory = buildSessionFactory();
 		}
@@ -23,9 +24,9 @@ public class HibernateUtils {
 
 			ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
 					.applySettings(configuration.getProperties()).build();
-			
+
 			SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
-			
+
 			return sessionFactory;
 		} catch (Throwable e) {
 			System.err.println("Initial SessionFactory creation failed." + e);

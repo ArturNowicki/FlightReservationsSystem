@@ -9,8 +9,8 @@ import org.hibernate.SessionFactory;
 
 public class AirportDAO {
 
-	public List<Airport> getAirportsList(SessionFactory sessionFactory) {
-		Session session = sessionFactory.getCurrentSession();
+	public List<Airport> getAirportsList() {
+		Session session = HibernateUtils.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		List<Airport> airports = session.createCriteria(Airport.class).list();
 		Hibernate.initialize(airports);
@@ -18,8 +18,8 @@ public class AirportDAO {
 		return airports;
 	}
 	
-	public Optional<Airport> getAirportById(SessionFactory sessionFactory, int id) {
-		Session session = sessionFactory.getCurrentSession();
+	public Optional<Airport> getAirportById(int id) {
+		Session session = HibernateUtils.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		Airport airport = (Airport) session.get(Airport.class, id);
 		Hibernate.initialize(airport);
