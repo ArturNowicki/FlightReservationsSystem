@@ -72,18 +72,18 @@ public class Flight {
 		return departureCity;
 	}
 
-	public void setDepartureCity(Airport departureCity) {
-		this.departureCity = departureCity;
-	}
-
+//	public void setDepartureCity(Airport departureCity) {
+//		this.departureCity = departureCity;
+//	}
+//
 	public Airport getArrivalCity() {
 		return arrivalCity;
 	}
 
-	public void setArrivalCity(Airport arrivalCity) {
-		this.arrivalCity = arrivalCity;
-	}
-
+//	public void setArrivalCity(Airport arrivalCity) {
+//		this.arrivalCity = arrivalCity;
+//	}
+//
 	
 	
 	@Override

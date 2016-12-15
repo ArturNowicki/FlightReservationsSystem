@@ -1,6 +1,11 @@
 USE FlightsReservations;
-drop table continent;
+
+drop table if exists SeatReservation;
+drop table if exists FlightSchedule;
+drop table if exists Seat;
+drop table if exists Flight;
 drop table if exists Airport;
+
 CREATE TABLE Airport (
 airportId int NOT NULL AUTO_INCREMENT,
 airportCity varchar(255),
@@ -10,16 +15,16 @@ UNIQUE KEY (airportCity)
 INSERT INTO Airport (airportCity) VALUES
 ('Warsaw'), ('London'), ('Frankfurt'), ('Vienna'), ('Paris'), ('Berlin');
 
-
-drop table if exists Flight;
 CREATE TABLE Flight (
 flightId int NOT NULL AUTO_INCREMENT,
 departureTime time,
 arrivalTime time,
-departureCity int NOT NULL REFERENCES Airport(airportId),
-arrivalCity int NOT NULL REFERENCES Airport(airportId),
+departureCity int NOT NULL,
+arrivalCity int NOT NULL,
 PRIMARY KEY (flightId),
-UNIQUE KEY (departureTime, departureCity, arrivalTime, arrivalCity)
+UNIQUE KEY (departureTime, departureCity, arrivalTime, arrivalCity),
+FOREIGN KEY (departureCity) REFERENCES Airport(airportId),
+FOREIGN KEY (arrivalCity) REFERENCES Airport(airportId)
 );
 INSERT INTO Flight (departureTime, arrivalTime, departureCity, arrivalCity) VALUES
 	('11:30:00', '12:20:00', 1, 2), ('15:15:00', '16:05:00', 2, 1),
@@ -28,7 +33,6 @@ INSERT INTO Flight (departureTime, arrivalTime, departureCity, arrivalCity) VALU
 	('12:30:00', '14:00:00', 6, 2), ('13:50:00', '15:20:00', 2, 6);
 
 
-drop table if exists Seat;
 CREATE TABLE Seat (
 seatId int NOT NULL AUTO_INCREMENT,
 seatNo VARCHAR(10) NOT NULL,
@@ -53,13 +57,13 @@ INSERT INTO Seat (seatNo) VALUES
 -- 							  ('FRIDAY'), ('SATURDAY'), ('SUNDAY');
 
 
-drop table if exists FlightSchedule;
 CREATE TABLE FlightSchedule (
 	scheduleId int NOT NULL AUTO_INCREMENT,
     dayOfWeek Varchar(10) NOT NULL,
-	idFlight int NOT NULL REFERENCES Flight(flightId),
+	idFlight int NOT NULL,
     PRIMARY KEY (scheduleId),
-    UNIQUE KEY (idFlight, dayOfWeek)
+    UNIQUE KEY (idFlight, dayOfWeek),
+    FOREIGN KEY (idFlight) REFERENCES Flight(flightId)
 );
 INSERT INTO FlightSchedule(dayOfWeek, idFlight) VALUES
 	('MONDAY', 1), ('MONDAY', 2), ('MONDAY', 3), ('MONDAY', 4),
@@ -70,18 +74,24 @@ INSERT INTO FlightSchedule(dayOfWeek, idFlight) VALUES
 	('SATURDAY', 1), ('SATURDAY', 2), ('SATURDAY', 5), ('SATURDAY', 6),
 	('SUNDAY', 1), ('SUNDAY', 2), ('SUNDAY', 3), ('SUNDAY', 4), ('SUNDAY', 7), ('SUNDAY', 8);
 
-
-drop table if exists SeatReservation;
 CREATE TABLE SeatReservation (
 	reservationId int NOT NULL AUTO_INCREMENT,
-    idSchedule int REFERENCES FlightSchedule(scheduleId),
-    idSeat int REFERENCES Seat(seatId),
+    idSchedule int NOT NULL,
+    idSeat int NOT NULL REFERENCES Seat(seatId),
     PRIMARY KEY (reservationId),
-    UNIQUE KEY (idSchedule, idSeat)
+    UNIQUE KEY (idSchedule, idSeat),
+    constraint FOREIGN KEY (idSchedule) REFERENCES FlightSchedule(scheduleId)
 );
+
 
 INSERT INTO SeatReservation (idSchedule, idSeat) VALUES
 	(1, 1), (1, 4), (18, 5);
+
+
+
+
+delete from Airport where airportId=1;
+
 
 -- display availiable airports
 Select * from Airport ORDER BY airportId;

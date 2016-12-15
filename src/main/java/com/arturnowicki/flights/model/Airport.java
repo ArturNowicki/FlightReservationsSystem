@@ -59,17 +59,17 @@ public class Airport implements Comparable<Airport> {
 		return departingFlights;
 	}
 
-	public void setDepartingFlights(List<Flight> flights) {
-		this.departingFlights = flights;
-	}
+//	public void setDepartingFlights(List<Flight> flights) {
+//		this.departingFlights = flights;
+//	}
 
 	public List<Flight> getArrivingFlights() {
 		return arrivingFlights;
 	}
 
-	public void setArrivingFlights(List<Flight> arrivingFlights) {
-		this.arrivingFlights = arrivingFlights;
-	}
+//	public void setArrivingFlights(List<Flight> arrivingFlights) {
+//		this.arrivingFlights = arrivingFlights;
+//	}
 
 	@Override
 	public String toString() {

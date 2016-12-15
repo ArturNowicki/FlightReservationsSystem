@@ -1,11 +1,11 @@
-package com.arturnowicki.filghts.model;
+package com.arturnowicki.filghts.service;
 
 import static org.junit.Assert.*;
 
 import org.junit.Ignore;
 import org.junit.Test;
 
-public class FlightScheduleDAOTest {
+public class FlightScheduleServiceTest {
 
 	@Test
 	@Ignore

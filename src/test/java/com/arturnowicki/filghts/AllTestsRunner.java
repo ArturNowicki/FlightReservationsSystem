@@ -1,13 +1,15 @@
-package com.arturnowicki.filghts.model;
+package com.arturnowicki.filghts;
 
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 
-public class ModelTestsRunner {
+import com.arturnowicki.filghts.model.AllModelTests;
+
+public class AllTestsRunner {
 
 	public static void main(String[] args) {
-		Result result = JUnitCore.runClasses(AllTests.class);
+		Result result = JUnitCore.runClasses(AllModelTests.class);
 
 		for (Failure failure : result.getFailures()) {
 			System.out.println(failure.toString());

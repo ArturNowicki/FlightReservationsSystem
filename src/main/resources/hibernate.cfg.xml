@@ -3,25 +3,25 @@
         "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
         "http://hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
-    <session-factory>
-        <!-- Database connection properties - Driver, URL, user, password -->
-        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost/FlightsReservations</property>
-        <property name="hibernate.connection.username">FlightsUser</property>
-        <property name="hibernate.connection.password">FlightsUser01</property>
+	<session-factory>
+		<!-- Database connection properties - Driver, URL, user, password -->
+		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="hibernate.connection.url">jdbc:mysql://localhost/FlightsReservations</property>
+		<property name="hibernate.connection.username">FlightsUser</property>
+		<property name="hibernate.connection.password">FlightsUser01</property>
 		<property name="hibernate.connection.pool_size">1</property>
 
 		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-		
-        <!-- Outputs the SQL queries, should be disabled in Production -->
-        <property name="hibernate.show_sql">true</property>
 
-        <!-- org.hibernate.HibernateException: No CurrentSessionContext configured! -->
-        <property name="hibernate.current_session_context_class">thread</property>
+		<!-- Outputs the SQL queries, should be disabled in Production -->
+		<property name="hibernate.show_sql">true</property>
+		<property name="hibernate.format_sql">true</property>
+		<!-- org.hibernate.HibernateException: No CurrentSessionContext configured! -->
+		<property name="hibernate.current_session_context_class">thread</property>
 
-        <!-- Mapping with model class containing annotations -->
-        <mapping class="com.arturnowicki.flights.model.Flight"/>
-        <mapping class="com.arturnowicki.flights.model.Airport"/>
- <!-- <mapping class="com.arturnowicki.flights.model.FlightSchedule"/> -->       
-    </session-factory>
+		<!-- Mapping with model class containing annotations -->
+		<mapping class="com.arturnowicki.flights.model.Flight" />
+		<mapping class="com.arturnowicki.flights.model.Airport" />
+		<!-- <mapping class="com.arturnowicki.flights.model.FlightSchedule"/> -->
+	</session-factory>
 </hibernate-configuration>

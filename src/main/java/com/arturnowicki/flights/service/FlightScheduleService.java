@@ -1,4 +1,4 @@
-package com.arturnowicki.flights.model;
+package com.arturnowicki.flights.service;
 
 import java.time.DayOfWeek;
 import java.util.List;
@@ -9,7 +9,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 
-public class FlightScheduleDAO {
+import com.arturnowicki.flights.model.FlightSchedule;
+
+public class FlightScheduleService {
 
 	public List<FlightSchedule> getScheduleFromDay(SessionFactory sessionFactory, DayOfWeek day) {
 		Session session = sessionFactory.getCurrentSession();

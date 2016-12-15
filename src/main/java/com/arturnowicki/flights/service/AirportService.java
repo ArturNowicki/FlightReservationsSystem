@@ -1,4 +1,4 @@
-package com.arturnowicki.flights.model;
+package com.arturnowicki.flights.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -7,7 +7,10 @@ import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-public class AirportDAO {
+import com.arturnowicki.flights.model.Airport;
+import com.arturnowicki.flights.model.HibernateUtils;
+
+public class AirportService {
 
 	public List<Airport> getAirportsList() {
 		Session session = HibernateUtils.getSessionFactory().getCurrentSession();
