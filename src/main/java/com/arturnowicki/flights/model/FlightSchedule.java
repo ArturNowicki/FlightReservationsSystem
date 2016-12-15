@@ -1,7 +1,5 @@
 package com.arturnowicki.flights.model;
 
-import java.time.DayOfWeek;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;

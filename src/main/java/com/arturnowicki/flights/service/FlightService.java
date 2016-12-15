@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 
+import com.arturnowicki.flights.dao.AirportDao;
+import com.arturnowicki.flights.dao.CommonDao;
 import com.arturnowicki.flights.model.Airport;
 import com.arturnowicki.flights.model.Flight;
 import com.arturnowicki.flights.model.HibernateUtils;
@@ -13,8 +15,8 @@ import com.arturnowicki.flights.model.HibernateUtils;
 public class FlightService {
 	
 	public List<Flight> getFlightsFromAirport(int airportId) {
-		AirportService airportDAO = new AirportService();
-		Optional<Airport> maybeAirport = airportDAO.getAirportById(airportId);
+		CommonDao airportDao = new AirportDao();
+		Optional<Airport> maybeAirport = airportDao.getById(airportId);
 		if(maybeAirport.isPresent()) {
 			Session session = HibernateUtils.getSessionFactory().getCurrentSession();
 			session.beginTransaction();
@@ -30,8 +32,8 @@ public class FlightService {
 	}
 
 	public List<Flight> getFlightsToAirport(int airportId) {
-		AirportService airportDAO = new AirportService();
-		Optional<Airport> maybeAirport = airportDAO.getAirportById(airportId);
+		CommonDao airportDao = new AirportDao();
+		Optional<Airport> maybeAirport = airportDao.getById(airportId);
 		if(maybeAirport.isPresent()) {
 			Session session = HibernateUtils.getSessionFactory().getCurrentSession();
 			session.beginTransaction();
