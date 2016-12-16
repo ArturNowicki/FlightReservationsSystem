@@ -2,6 +2,7 @@ package com.arturnowicki.flights.service;
 
 import java.time.DayOfWeek;
 import java.util.List;
+import java.util.Optional;
 
 import org.hibernate.Hibernate;
 import org.hibernate.Session;

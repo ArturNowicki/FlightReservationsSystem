@@ -57,15 +57,10 @@ public class CommonDaoImpl implements CommonDao {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public <T> List<T> getAll(Class<T> type) {
 		Session session = startTransaction();
-		@SuppressWarnings("unchecked")
 		List<T> tList = session.createCriteria(type).list();
-//		CriteriaQuery<T> query = session.getCriteriaBuilder().createQuery(type);
-//		query.select(query.from(type));
-//		Query<T> q = session.createQuery(query);
-//		q.setCacheable(true);
-//		q.list();
 		Hibernate.initialize(tList);
 		session.getTransaction().commit();
 		return tList;
