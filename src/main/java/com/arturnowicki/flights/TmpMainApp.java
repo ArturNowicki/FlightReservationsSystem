@@ -14,7 +14,7 @@ public class TmpMainApp {
 	private static void runSession() {
 		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
 		Session session = sessionFactory.getCurrentSession();
-		System.out.println("Run");
+		System.out.println("Run " + session.isConnected());
 		sessionFactory.close();
 	}
 	

@@ -11,7 +11,7 @@ import org.junit.Test;
 import com.arturnowicki.flights.model.Airport;
 import com.arturnowicki.flights.model.HibernateUtils;
 
-public class AirportTest {
+public class AirportEqualsTest {
 
 	@Test
 	public void testEqualsWhenEqual() {

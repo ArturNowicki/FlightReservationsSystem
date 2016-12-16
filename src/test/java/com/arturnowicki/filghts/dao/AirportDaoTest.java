@@ -1,24 +1,21 @@
+
 package com.arturnowicki.filghts.dao;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.hibernate.Hibernate;
-import org.hibernate.HibernateException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.arturnowicki.flights.dao.AirportDao;
+import com.arturnowicki.flights.dao.CommonDao;
 import com.arturnowicki.flights.model.Airport;
-import com.arturnowicki.flights.model.exceptions.WrongAirportException;
-import com.arturnowicki.flights.service.AirportService;
 
 public class AirportDaoTest {
 
@@ -50,31 +47,31 @@ public class AirportDaoTest {
 		airport = new Airport("Berlin");
 		airport.setAirportId(6);
 		airportsForComparison.add(airport);
-	}
+
+		airport = new Airport("New York");
+		airport.setAirportId(7);
+		airportsForComparison.add(airport);
+}
 
 	@Test
 	public void testAddAndDeleteAirportWhenAllOK() {
-		int expectedSize = 6;
-		AirportDao airportDao = new AirportDao();
-		List<Airport> airportsList = airportDao.getAirportsList();
+		int expectedSize = 7;
+		CommonDao airportDao = new AirportDao();
+		List<Airport> airportsList = airportDao.getAll(Airport.class);
 
 		assertEquals(expectedSize, airportsList.size());
 
-		Airport newAirport = new Airport("New York");
+		Airport newAirport = new Airport("Chicago");
 		Airport addedAirport = null;
-		try {
-			addedAirport = airportDao.addAirport(newAirport);
-		} catch (ConstraintViolationException e) {
-			e.printStackTrace();
-		}
-		airportsList = airportDao.getAirportsList();
+		addedAirport = airportDao.add(newAirport);
+		airportsList = airportDao.getAll(Airport.class);
 
 		assertEquals(expectedSize + 1, airportsList.size());
 		assertTrue(airportsList.contains(addedAirport));
 
-		airportDao.deleteAirport(addedAirport);
+		airportDao.delete(addedAirport);
 
-		airportsList = airportDao.getAirportsList();
+		airportsList = airportDao.getAll(Airport.class);
 
 		assertEquals(expectedSize, airportsList.size());
 		assertFalse(airportsList.contains(addedAirport));
@@ -82,21 +79,21 @@ public class AirportDaoTest {
 
 	@Test(expected = ConstraintViolationException.class)
 	public void testAddAirportWhenAlreadyExists() {
-		AirportDao airportDao = new AirportDao();
+		CommonDao airportDao = new AirportDao();
 		Airport newAirport = new Airport("Warsaw");
-		airportDao.addAirport(newAirport);
+		airportDao.add(newAirport);
 	}
 
 	@Test(expected = ConstraintViolationException.class)
 	public void testDeleteAirportWhenAirportUsed() {
-		AirportDao airportDao = new AirportDao();
-		airportDao.deleteAirport(airportsForComparison.get(1));
+		CommonDao airportDao = new AirportDao();
+		airportDao.delete(airportsForComparison.get(1));
 	}
 
 	@Test
-	public void testShouldReturnAllAirports() {
-		AirportService airportDAO = new AirportService();
-		List<Airport> airports = airportDAO.getAirportsList();
+	public void testGetAll() {
+		CommonDao airportDAO = new AirportDao();
+		List<Airport> airports = airportDAO.getAll(Airport.class);
 		assertEquals(airportsForComparison.size(), airports.size());
 		assertTrue(airports.containsAll(airportsForComparison));
 		assertTrue(airportsForComparison.containsAll(airports));
@@ -104,30 +101,31 @@ public class AirportDaoTest {
 
 	@Test
 	public void testGetAirportByIdShouldReturnExistingAirport() {
-		AirportService airportDAO = new AirportService();
-		Optional<Airport> airport = airportDAO.getAirportById(6);
+		CommonDao airportDAO = new AirportDao();
+		Optional<Airport> airport = airportDAO.getById(Airport.class, 6);
 		assertTrue(airport.isPresent());
 		assertEquals("Berlin", airport.get().getAirportCity());
 	}
 
 	@Test
 	public void testGetAirportByIdShouldReturnNullForNoId() {
-		AirportService airportDAO = new AirportService();
-		Optional<Airport> airport = airportDAO.getAirportById(9);
+		CommonDao airportDAO = new AirportDao();
+		Optional<Airport> airport = airportDAO.getById(Airport.class, 9);
 		assertFalse(airport.isPresent());
 	}
 
 	@Test
 	public void testUpdateAirportWhenAllOK() {
 		int id = 1;
-		AirportDao airportDao = new AirportDao();
-		Airport airport = new Airport("New York");
+		CommonDao airportDao = new AirportDao();
+		Airport airport = new Airport("Chicago");
 		airport.setAirportId(id);
-		airportDao.updateAirport(airport);
-		Optional<Airport> maybeAirport = airportDao.getAirportById(id);
+		airportDao.update(airport);
+		Optional<Airport> maybeAirport = airportDao.getById(Airport.class, id);
+		System.out.println(maybeAirport.isPresent());
 		assertTrue(maybeAirport.isPresent());
 		assertEquals(maybeAirport.get(), airport);
 		airport.setAirportCity("Warsaw");
-		airportDao.updateAirport(airport);
+		airportDao.update(airport);
 	}
 }

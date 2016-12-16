@@ -1,7 +1,5 @@
 package com.arturnowicki.flights.model;
 
-import java.time.DayOfWeek;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -59,5 +57,43 @@ public class FlightSchedule {
 		this.flight = flight;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((dayOfWeek == null) ? 0 : dayOfWeek.hashCode());
+		result = prime * result + ((flight == null) ? 0 : flight.hashCode());
+		result = prime * result + scheduleId;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		FlightSchedule other = (FlightSchedule) obj;
+		if (dayOfWeek == null) {
+			if (other.dayOfWeek != null)
+				return false;
+		} else if (!dayOfWeek.equals(other.dayOfWeek))
+			return false;
+		if (flight == null) {
+			if (other.flight != null)
+				return false;
+		} else if (!flight.equals(other.flight))
+			return false;
+		if (scheduleId != other.scheduleId)
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "FlightSchedule [scheduleId=" + scheduleId + ", dayOfWeek=" + dayOfWeek + ", flight=" + flight + "]";
+	}
 	
 }

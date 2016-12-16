@@ -23,8 +23,8 @@ departureCity int NOT NULL,
 arrivalCity int NOT NULL,
 PRIMARY KEY (flightId),
 UNIQUE KEY (departureTime, departureCity, arrivalTime, arrivalCity),
-FOREIGN KEY (departureCity) REFERENCES Airport(airportId),
-FOREIGN KEY (arrivalCity) REFERENCES Airport(airportId)
+CONSTRAINT FOREIGN KEY (departureCity) REFERENCES Airport(airportId),
+CONSTRAINT FOREIGN KEY (arrivalCity) REFERENCES Airport(airportId)
 );
 INSERT INTO Flight (departureTime, arrivalTime, departureCity, arrivalCity) VALUES
 	('11:30:00', '12:20:00', 1, 2), ('15:15:00', '16:05:00', 2, 1),
@@ -56,14 +56,13 @@ INSERT INTO Seat (seatNo) VALUES
 -- INSERT INTO FlightDays (dayOfWeek) VALUES ('MONDAY'), ('TUESDAY'), ('WEDNESDAY'), ('THURSDAY'),
 -- 							  ('FRIDAY'), ('SATURDAY'), ('SUNDAY');
 
-
 CREATE TABLE FlightSchedule (
 	scheduleId int NOT NULL AUTO_INCREMENT,
     dayOfWeek Varchar(10) NOT NULL,
 	idFlight int NOT NULL,
     PRIMARY KEY (scheduleId),
     UNIQUE KEY (idFlight, dayOfWeek),
-    FOREIGN KEY (idFlight) REFERENCES Flight(flightId)
+    CONSTRAINT FOREIGN KEY (idFlight) REFERENCES Flight(flightId)
 );
 INSERT INTO FlightSchedule(dayOfWeek, idFlight) VALUES
 	('MONDAY', 1), ('MONDAY', 2), ('MONDAY', 3), ('MONDAY', 4),
@@ -77,10 +76,11 @@ INSERT INTO FlightSchedule(dayOfWeek, idFlight) VALUES
 CREATE TABLE SeatReservation (
 	reservationId int NOT NULL AUTO_INCREMENT,
     idSchedule int NOT NULL,
-    idSeat int NOT NULL REFERENCES Seat(seatId),
+    idSeat int NOT NULL,
     PRIMARY KEY (reservationId),
     UNIQUE KEY (idSchedule, idSeat),
-    constraint FOREIGN KEY (idSchedule) REFERENCES FlightSchedule(scheduleId)
+    CONSTRAINT FOREIGN KEY (idSchedule) REFERENCES FlightSchedule(scheduleId),
+    CONSTRAINT FOREIGN KEY (idSeat) REFERENCES Seat(seatId)
 );
 
 
@@ -90,11 +90,11 @@ INSERT INTO SeatReservation (idSchedule, idSeat) VALUES
 
 
 
-delete from Airport where airportId=1;
+delete from Airport where airportId=7;
 
 
 -- display availiable airports
-Select * from Airport ORDER BY airportId;
+Select * from Flight ORDER BY flightId;
 
 -- display all flights from selected airport
 SELECT flightId, dayOfWeek, departureTime, a.airportCity as departure, b.airportCity as arrival, arrivalTime
