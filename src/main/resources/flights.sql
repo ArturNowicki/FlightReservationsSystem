@@ -14,7 +14,7 @@ UNIQUE KEY (airportCity)
 );
 INSERT INTO Airport (airportCity) VALUES
 ('Warsaw'), ('London'), ('Frankfurt'), ('Vienna'), ('Paris'), ('Berlin');
-
+INSERT INTO Airport (airportCity) VALUES ('New York');
 CREATE TABLE Flight (
 flightId int NOT NULL AUTO_INCREMENT,
 departureTime time,
@@ -31,7 +31,6 @@ INSERT INTO Flight (departureTime, arrivalTime, departureCity, arrivalCity) VALU
 	('09:20:00', '11:25:00', 3, 4), ('14:45:00', '16:50:00', 4, 3),
 	('15:00:00', '17:05:00', 1, 5), ('19:10:00', '21:15:00', 5, 1),
 	('12:30:00', '14:00:00', 6, 2), ('13:50:00', '15:20:00', 2, 6);
-
 
 CREATE TABLE Seat (
 seatId int NOT NULL AUTO_INCREMENT,
@@ -89,12 +88,22 @@ INSERT INTO SeatReservation (idSchedule, idSeat) VALUES
 
 
 
+-- ////////////////////////////////////
+-- TESTING COMMANDS
+-- ////////////////////////////////////
+
+
+
 
 delete from Airport where airportId=7;
 
 
--- display availiable airports
+-- display availiable data
 Select * from Flight ORDER BY flightId;
+Select * from Airport ORDER BY airportId;
+
+-- display flights from airport
+SELECT * FROM Flight WHERE arrivalCity = 1;
 
 -- display all flights from selected airport
 SELECT flightId, dayOfWeek, departureTime, a.airportCity as departure, b.airportCity as arrival, arrivalTime
@@ -102,9 +111,8 @@ FROM Airport a
 JOIN Flight ON (a.airportId = departureCity)
 JOIN Airport b ON (b.airportId = arrivalCity)
 JOIN FlightSchedule ON (flightId=idFlight)
-JOIN FlightDays ON (dayId = IdDay)
-WHERE a.airportCity='Warsaw'
-ORDER BY dayId;
+WHERE b.airportCity='Warsaw'
+ORDER BY flightId, dayOfWeek;
 
 
 SELECT * FROM Flight order by flightId;
