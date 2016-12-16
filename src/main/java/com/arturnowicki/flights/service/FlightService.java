@@ -5,14 +5,16 @@ import java.util.Optional;
 
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
 import com.arturnowicki.flights.model.Airport;
 import com.arturnowicki.flights.model.Flight;
 import com.arturnowicki.flights.model.HibernateUtils;
+import com.arturnowicki.flights.model.exceptions.WrongAirportException;
 
 public class FlightService {
 	
-	public List<Flight> getFlightsFromAirport(int airportId) {
+	public List<Flight> getFlightsFromAirport(int airportId) throws WrongAirportException {
 		AirportService airportDAO = new AirportService();
 		Optional<Airport> maybeAirport = airportDAO.getAirportById(airportId);
 		if(maybeAirport.isPresent()) {
@@ -25,11 +27,11 @@ public class FlightService {
 			session.getTransaction().commit();
 			return flights;
 		} else {
+			throw new WrongAirportException(String.valueOf(airportId));
 		}
-		return null;
 	}
 
-	public List<Flight> getFlightsToAirport(int airportId) {
+	public List<Flight> getFlightsToAirport(int airportId) throws WrongAirportException {
 		AirportService airportDAO = new AirportService();
 		Optional<Airport> maybeAirport = airportDAO.getAirportById(airportId);
 		if(maybeAirport.isPresent()) {
@@ -42,8 +44,8 @@ public class FlightService {
 			session.getTransaction().commit();
 			return flights;
 		} else {
+			throw new WrongAirportException(String.valueOf(airportId));
 		}
-		return null;
 	}
 
 
